@@ -12,7 +12,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
 
-      steps:
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -41,27 +41,27 @@ jobs:
         run: |
           ./gradlew prebuild
 
-      - name: Build release
+      - name: Build Release APK
         id: buildRelease
         run: |
           ./gradlew clean assembleRelease
           find ./app -type f -name "*.apk" -exec bash -c 'mv "$0" ./app/$(basename "$0")' {} \;
 
-      - name: Upload release
+      - name: Upload Release APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: release
           path: "app/*.apk"
 
-       - name: Build Debug
+      - name: Build Debug APK
         id: buildDebug
         run: |
           find ./app -type f -name "*.apk" -exec rm -f {} \;
           ./gradlew clean assembleDebug
           find ./app -type f -name "*.apk" -exec bash -c 'mv "$0" ./app/$(basename "$0")' {} \;
           
-       - name: Upload Debug
+      - name: Upload Debug APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
